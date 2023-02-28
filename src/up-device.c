@@ -85,6 +85,13 @@ update_warning_level (UpDevice *device)
 	UpDeviceLevel warning_level, battery_level;
 	UpExportedDevice *skeleton = UP_EXPORTED_DEVICE (device);
 
+	// Disable warning notifications for wireless mice
+	if (up_exported_device_get_type_(skeleton) == UP_DEVICE_KIND_MOUSE 
+			&& up_exported_device_get_state(skeleton) == UP_DEVICE_STATE_DISCHARGING) {
+		up_exported_device_set_warning_level(skeleton, UP_DEVICE_LEVEL_NONE);
+		return;
+	}
+
 	if (priv->native == NULL)
 		return;
 
